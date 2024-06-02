@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchBaseCurrency, fetchExchangeCurrency } from '../../redux/currency/operations';
+import { fetchBaseCurrency, fetchExchangeCurrency, fetchLatestSymbols } from '../../redux/currency/operations';
 
 const initialState = {
   baseCurrency: '',
   exchangeInfo: null,
   loading: false,
   error: null,
+  rates: [],
 };
 const currencySlice = createSlice({
   name: 'currency',
@@ -32,7 +33,20 @@ const currencySlice = createSlice({
         state.error = payload;
         state.exchangeInfo = null;
         state.loading = false;
-  })
+      })
+      .addCase(fetchLatestSymbols.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchLatestSymbols.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.rates = payload;
+      })
+      .addCase(fetchLatestSymbols.rejected, (state, { payload }) => {
+        state.error = payload;
+        state.rates = [];
+        state.loading = false;
+      })
 });
 
 export const { setBaseCurrency } = currencySlice.actions;
