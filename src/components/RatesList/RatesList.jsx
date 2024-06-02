@@ -2,9 +2,10 @@ import { Grid, GridItem } from 'components';
 import styles from './RatesList.module.css';
 
 export const RatesList = ({ rates }) => {
+  // console.log(rates);
   return (
     <Grid>
-      {rates.map(([key, value]) => (
+      {rates.map(({key, value}) => (
         <GridItem key={key}>
           <p className={styles.text}>
             1 {key} = {value}

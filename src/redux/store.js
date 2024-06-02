@@ -12,6 +12,7 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import { currencyReduser } from '../redux/currency/currencySlice';
+import { filterReducer } from './filter/filterSlice';
 
 const persistConfig = {
   key: 'root',
@@ -23,7 +24,10 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, currencyReduser);
 
 export const store = configureStore({
-  reducer: { currency: persistedReducer },
+  reducer: {
+    currency: persistedReducer,
+    filter: filterReducer,
+  },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -34,4 +38,5 @@ export const store = configureStore({
 
 export const persistor = persistStore(store);
 
-/// state => currency => state => baseCurrency
+/// state => currency => inititalState => baseCurrency
+// state => filter => initianState => ''
